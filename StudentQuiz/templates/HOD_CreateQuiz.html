@@ -1,0 +1,112 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+   Create Quiz Here
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Quiz</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{%url 'createquizesave'%}">
+                        {% csrf_token %}
+
+
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Quiz Name </label>
+                                <input type="text" class="form-control" name="quizname" placeholder="Enter Quiz Name ">
+                            </div>
+                             <div class="form-group">
+                                <label>Quiz Topic </label>
+                                <input type="text" class="form-control" name="quiztopic" placeholder="Enter Quiz Topic">
+                            </div>
+                             <div class="form-group">
+                                <label>Quiz Question Number </label>
+                                <input type="number" class="form-control" name="questionumber" placeholder="Enter Question Number">
+                            </div>
+                             <div class="form-group">
+                                <label>Quiz Time (in minute) </label>
+                                <input type="number" class="form-control" name="quiztime" placeholder="Enter Quiz Time">
+                            </div>
+                             <div class="form-group">
+                                <label>Required Score to Pass </label>
+                                <input type="number" class="form-control" name="quizscore" placeholder="Enter Subject">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Quiz Difficulty </label>
+
+                                  <select class="form-control" name="quizDifficulty">
+
+                                        <option value="easy">easy</option>
+                                        <option value="medium">medium</option>
+                                        <option value="hard">hard</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Courses </label>
+                                <select class="form-control" name="course">
+                                     {% for course in courses %}
+                                        <option value="{{ course.id }}">{{ course.course_name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Add Quiz</button>
+                        </div>
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+
+  {% endblock main_content %}

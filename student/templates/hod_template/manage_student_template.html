@@ -1,0 +1,145 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+    Manage Student
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <a class="btn btn-primary" href="{% url 'add_student' %}" role="button">+ Add Student</a>
+            <a class="btn btn-success float-right"  href="{%url 'train_model'%}" role="button">Train Model</a>
+            <br/>&nbsp;
+            <div id="notification" class="ml-5" style="color:red;background: black;">
+	For taking Image just click on Username and press <b>SPACE</b> according to image number  and exist capturing just press <b> Esc </b>
+        </div>
+            <br/>
+            
+            {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+            <div class="row">
+
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">Student Details</h3>
+
+                            <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input onkeyup="myFunction()" id="myInput" type="number" name="table_search" class="form-control float-right" placeholder="Search by ID">
+
+                                <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body table-responsive p-0">
+                            <table class="table table-hover text-nowrap" id="myTable">
+
+                                <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Gender</th>
+                                <th>Profile Pic</th>
+                                    <th>Num.Train Img</th>
+                                <th>Start Year</th>
+                                <th>End Year</th>
+                                <th>Course</th>
+                                <th>Last Login</th>
+                                <th>Date Joined</th>
+                                <th>Action</th>
+                                </tr>
+
+
+                                {% for student in students %}
+                                <tr>
+                                <td>{{ student.admin.id }}</td>
+                                <td>{{ student.admin.first_name }}</td>
+                                <td>{{ student.admin.last_name }}</td>
+                                <td> <a href="{%url 'studentphotostake' id=student.id%}"> {{ student.admin.username }}</a></td>
+                                <td>{{ student.admin.email }}</td>
+                                <td>{{ student.address }}</td>
+                                <td>{{ student.gender }}</td>
+                                <td> <img src="{{ student.profile_pic }}" style="width: 100px;" /> </td>
+                                    <td>{{student.num_photos}}</td>
+                                <td>{{ student.session_year_id.session_start_year }}</td>
+                                <td>{{ student.session_year_id.session_end_year }}</td>
+                                <td>{{ student.course_id.course_name }}</td>
+                                <td>{{ student.admin.last_login }}</td>
+                                <td>{{ student.admin.date_joined }}</td>
+                                <td>
+                                    <a href="{% url 'edit_student' student.admin.id %}" class="btn btn-success">Edit</a> 
+                                    <a href="{% url 'delete_student' student.admin.id %}" class="btn btn-danger">Delete</a>
+                                </td>
+                                </tr>
+                                {% endfor %}
+                                
+
+                            </table>
+                        </div>
+                        <!-- /.card-body -->
+                        </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+<script>
+function myFunction() {
+	var input, filter, table, tr, td, i, txtValue;
+	input = document.getElementById("myInput");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("myTable");
+	tr = table.getElementsByTagName("tr");
+	for (i = 0; i < tr.length; i++) {
+		td = tr[i].getElementsByTagName("td")[0];
+		if (td) {
+			txtValue = td.textContent || td.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				tr[i].style.display = "";
+			} else {
+				tr[i].style.display = "none";
+			}
+		}
+	}
+}
+</script>
+  {% endblock main_content %}
+
+

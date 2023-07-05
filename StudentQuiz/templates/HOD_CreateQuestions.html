@@ -1,0 +1,116 @@
+{% extends 'hod_template/base_template.html' %}
+
+{% block page_title %}
+   Create Questions Here
+{% endblock page_title %}
+
+{% block main_content %}
+
+{% load static %}
+
+<section class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- general form elements -->
+                    <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Create Questions</h3>
+                        <a class="float-right" href="{%url 'AllQuestionShow'%}">Show all Questions</a>
+
+                        <a class="float-right mr-5" href="{%url 'answerquestion'%}">Quick Create Answer</a>
+                    </div>
+                    <!-- /.card-header -->
+                    <!-- form start -->
+                    <form role="form" method="POST" action="{%url 'CreateQuestionSave'%}">
+                        {% csrf_token %}
+
+
+                                {% comment %} Display Messages {% endcomment %}
+                                {% if messages %}
+                                <div class="form-group">
+                                <div class="col-12">
+                                    {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" style="margin-top: 10px;">
+                                        {{ message }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        </div>
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>Question Text </label>
+                                <input type="text" id="questionmain" class="form-control" name="questiontext" placeholder="Enter Quiz Name ">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Quiz </label>
+                                <select class="form-control" name="existquiz">
+                                     {% for quiz in quiz %}
+                                        <option value="{{ quiz.id }}">{{ quiz.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                        </div>
+                        <!-- /.card-body -->
+<!--                        <div class="card-header">-->
+<!--                                  <h3 class="btn btn-info d-flex justify-content-center">Answer Part</h3>-->
+<!--                        </div>-->
+<!--                        <div class="card-body">-->
+<!--                              <div class="form-group">-->
+<!--                                <input type="text" id="questionanwer" class="form-control" name="question">-->
+<!--                            </div>-->
+<!--                            <div class="row">-->
+<!--                             <div class="form-group col-8">-->
+<!--                                <label>Answer Text </label>-->
+<!--                                <input type="text" class="form-control" name="answertext">-->
+<!--                            </div>-->
+<!--                                 <div class="form-group col-4">-->
+<!--                                <label class="ml-5">Correst answer</label>-->
+<!--                                <input type="checkbox" class="form-control" name="answercheck">-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                        </div>-->
+
+                        <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Add Question</button>
+                        </div>
+
+                    </form>
+                    </div>
+                    <!-- /.card -->
+
+                </div>
+            </div>
+
+        </div><!-- /.container-fluid -->
+      </section>
+
+<script type="text/javascript">
+    var q1=document.getElementById("questionmain");
+    var q2=document.getElementById("questionanwer");
+    q1.addEventListener('change',function () {
+        q2.value=q1.value;
+    })
+
+</script>
+
+
+  {% endblock main_content %}
